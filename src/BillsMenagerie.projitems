@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ed0e5cb7-d69a-4d6f-bad9-21fbeba3c46f</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>BillsMenagerie</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\AccentNormalizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\BFunct.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\HelpModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBuckets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBucketsAWS.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBucketsGCP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBucketsLocal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BlueImpUploadService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\CaptchaImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\ExecutionPlan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\IUserFileManagement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\JwtTokenBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Templates\RequestPiplineTemplateMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\SerializableDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\StringHash.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\SwaggerAuthorized.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\TextDataParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controlers\TokenController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\UserFileManagementBB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\UserFileManagementFolder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ViewRender.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controlers\CheckController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controlers\HelpController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controlers\SwaggerUIController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\WebMailModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ApiKeyAuthHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BackgroundSerivceWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CipherService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\JwtTokenServiceBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\LoginWatcherService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Views\Help\Index.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Views\Help\Search.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Views\SwaggerUI\css.cshtml" />
+  </ItemGroup>
+</Project>

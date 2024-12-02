@@ -1,0 +1,17 @@
+﻿@model HelpFile
+
+@{
+    Layout = "_LayoutSupport";
+
+}
+<h4><i class="fa-regular fa-circle-question"></i> StreetPerfect Help</h4>
+
+<div class="row">
+    <div class="col help-content">
+        @Html.Raw(@Model.Html)
+    </div>
+</div>
+
+@section Scripts {
+
+}
