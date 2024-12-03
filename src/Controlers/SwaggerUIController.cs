@@ -15,14 +15,12 @@ namespace Common.Controllers
         {
             Response.ContentType = "text/css";
 
+            ViewBag.Theme = "light";
             if (Request.Cookies.TryGetValue("theme", out string theme))
             {
-                if (theme == "dark")
-                    return View();  
+                ViewBag.Theme = theme;
             }
-
-            return Content("");
-            
+            return View();
         }
 
     }
