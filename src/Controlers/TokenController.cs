@@ -32,7 +32,7 @@ namespace Common.Controllers
 	}
 
 	[ApiController]
-	[ApiExplorerSettings(GroupName = "token")]
+	[ApiExplorerSettings(GroupName = "Token")]
 	[Route("api/[controller]")]
 	[Produces("application/json", "text/json", "application/xml", "text/xml")]
 	[Consumes("application/json", "text/json", "application/xml", "text/xml")]
