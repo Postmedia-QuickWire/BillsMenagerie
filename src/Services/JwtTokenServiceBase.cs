@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using Common.Classes;
-//using k8s.KubeConfigModels;
 
 namespace Common.Services
 {
@@ -35,9 +34,7 @@ namespace Common.Services
     /// 
     /// You can then use this in your own token endpoints
     /// 
-    /// check: https://github.com/Postmedia-StreetPerfect/StreetPerfectWebApiSite/blob/0b1740f0298ae37d66ce62fa73a6605a16545df7/StreetPerfectWebApiSite/Classes/BearerTokenService.cs
-    /// (from the https://github.com/Postmedia-StreetPerfect repo)
-    /// for an production example of implementing BearerTokenService
+    /// 
     /// </summary>
 
     public class JwtAppOptions

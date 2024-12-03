@@ -19,8 +19,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\BlueImpUploadService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\CaptchaImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ExecutionPlan.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\IUserFileManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\JwtTokenBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IUserFileManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\RequestPiplineTemplateMiddleware.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\SerializableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\StringHash.cs" />
