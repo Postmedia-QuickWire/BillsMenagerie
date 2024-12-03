@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Common.JwtTokenSecurity; //<< very nice JWT builder class I ripped off somewhere
+using Common.Classes;
 using System.Collections.Generic;
-//using k8s.KubeConfigModels;
 
 namespace Common.Services
 {
@@ -28,16 +27,14 @@ namespace Common.Services
     ///		then override (minimally) both:
     ///		AuthenticateTokenUser(TokenRequest tok_req);
     ///		GetTokenUserForId(string id);
-    ///		
+    ///		 
     /// and finally, add as a scoped service in Startup.cs
     /// 
     /// services.AddScoped&lt;IBearerTokenService, BearerTokenService&gt;();
     /// 
     /// You can then use this in your own token endpoints
     /// 
-    /// check: https://github.com/Postmedia-StreetPerfect/StreetPerfectWebApiSite/blob/0b1740f0298ae37d66ce62fa73a6605a16545df7/StreetPerfectWebApiSite/Classes/BearerTokenService.cs
-    /// (from the https://github.com/Postmedia-StreetPerfect repo)
-    /// for an production example of implementing BearerTokenService
+    /// 
     /// </summary>
 
     public class JwtAppOptions
