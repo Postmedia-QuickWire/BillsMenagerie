@@ -19,7 +19,7 @@ using StreetPerfect.Controllers;
 using StreetPerfect.Models;
 using Common.Classes;
 using WebSite.Controllers;
-using WebSite.Models;
+using Common.Models;
 
 
 namespace Common.Controllers
