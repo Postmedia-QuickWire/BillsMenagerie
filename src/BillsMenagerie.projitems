@@ -11,6 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Classes\AccentNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\BFunct.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CommonWebModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\WebUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBuckets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBucketsAWS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBucketsGCP.cs" />
@@ -18,6 +20,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\BlueImpUploadService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\CaptchaImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ExecutionPlan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FilesDownloadBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FilesDownloadBB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IUserFileManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\JwtTokenBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\RequestPiplineTemplateMiddleware.cs" />
