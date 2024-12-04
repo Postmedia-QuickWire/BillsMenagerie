@@ -4,7 +4,7 @@ using System.Net;
 using WebSite.Models;
 using Common.Services;
 
-namespace StreetPerfect.Classes
+namespace Common.Classes
 {
 
 	/// <summary>

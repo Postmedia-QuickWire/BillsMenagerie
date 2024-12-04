@@ -1,14 +1,13 @@
 ﻿
 using Microsoft.Extensions.Options;
 using StreetPerfect.Controllers;
-using StreetPerfectWebApiSite.Controllers;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using WebSite.Models;
 using Common.Models;
 
-namespace StreetPerfect.Classes
+namespace Common.Classes
 {
 	public class DownloadViewModel
 	{
