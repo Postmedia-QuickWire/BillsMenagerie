@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\AccentNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\BFunct.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\CommonWebModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DataTablesAjaxModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\WebUserBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBuckets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\BillsBucketsAWS.cs" />
