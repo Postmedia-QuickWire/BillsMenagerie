@@ -83,21 +83,23 @@ namespace Common.Classes
 		/// </summary>
 		public bool isApiDownload { get; set; } = false;
 
-		/// <summary>
-		/// Account must hold ONE of the Access Roles to download item
-		/// </summary>
-		public List<WebAccount.DL> Access { get; set; }
+        /// <summary>
+        /// Account must hold ONE of the Access Roles to download item
+        /// </summary>
+        //public List<WebAccount.DL> Access { get; set; }
+        public List<string> Access { get; set; }
 
 
-		/// <summary>
-		/// Account must hold ONE or more of the Platform Roles to download an app item
-		/// </summary>
-		public List<WebAccount.DL> Platforms { get; set; }
+        /// <summary>
+        /// Account must hold ONE or more of the Platform Roles to download an app item
+        /// </summary>
+        //public List<WebAccount.DL> Platforms { get; set; }
+        public List<string> Platforms { get; set; }
 
-		/// <summary>
-		/// storage type is set at scan time by FilesDownloadBase sub class
-		/// </summary>
-		public string StorageType { get; set; }
+        /// <summary>
+        /// storage type is set at scan time by FilesDownloadBase sub class
+        /// </summary>
+        public string StorageType { get; set; }
 
 		/// <summary>
 		/// make all file versions avaliable
