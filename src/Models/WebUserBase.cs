@@ -275,9 +275,9 @@ namespace Common.Models
             if (_roles == null)
             {
                 if (Roles != null)
-                    _roles = Roles.ToLower().Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                    _roles = Roles.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToHashSet(StringComparer.OrdinalIgnoreCase);
                 else
-                    _roles = new HashSet<string>();
+                    _roles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             }
 			return _roles;
 		}
@@ -290,7 +290,7 @@ namespace Common.Models
 
         public bool IsInRole(string role)
 		{
-            return GetRoles().Contains(role.ToLower());
+            return GetRoles().Contains(role);
 		}
 
 		public void AddRole(string role)
@@ -313,19 +313,16 @@ namespace Common.Models
 			return SupportToDate >= DateTime.UtcNow;
 		}
 
-        public bool CanDownload(List<string> dl_privs)
+
+        public bool CanDownload(HashSet<string> dl_privs)
         {
-            if (dl_privs == null)
+            if (dl_privs == null || dl_privs.Count == 0)
             {
                 return true; //null access means anyone can download!
             }
             else if (IsSupported())
             {
-                foreach (var dl in dl_privs)
-                {
-                    if (CanDownload(dl))
-                        return true;
-                }
+                return GetDownloadPerms().Overlaps(dl_privs);
             }
 
             return false;
@@ -333,7 +330,7 @@ namespace Common.Models
 
         public bool CanDownload(string dl_priv)
         {
-            return GetDownloadPerms().Contains(dl_priv.ToLower());
+            return GetDownloadPerms().Contains(dl_priv);
         }
 
         public HashSet<string> GetDownloadPerms()
@@ -342,11 +339,11 @@ namespace Common.Models
             {
                 if (String.IsNullOrEmpty(DownloadPerms))
                 {
-                    _downloadPerms = new HashSet<string>();
+                    _downloadPerms = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 }
                 else
                 {
-                    _downloadPerms = DownloadPerms.ToLower().Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                    _downloadPerms = DownloadPerms.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToHashSet(StringComparer.OrdinalIgnoreCase);
                 }
             }
             return _downloadPerms;

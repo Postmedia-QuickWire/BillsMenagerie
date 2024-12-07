@@ -87,14 +87,14 @@ namespace Common.Classes
         /// Account must hold ONE of the Access Roles to download item
         /// </summary>
         //public List<WebAccount.DL> Access { get; set; }
-        public List<string> Access { get; set; }
+        public HashSet<string> Access { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
 
         /// <summary>
         /// Account must hold ONE or more of the Platform Roles to download an app item
         /// </summary>
         //public List<WebAccount.DL> Platforms { get; set; }
-        public List<string> Platforms { get; set; }
+        public HashSet<string> Platforms { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// storage type is set at scan time by FilesDownloadBase sub class
