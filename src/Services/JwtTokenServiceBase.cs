@@ -141,7 +141,7 @@ namespace Common.Services
         public string TokenUserId { get; }
         public string TokenAccountId { get; }
         public string Name { get; }
-        public List<string> GetAllRoles();  //list of roles separated by commas
+        public HashSet<string> GetAllRoles();  //list of roles separated by commas
         public bool IsDisabled { get; }
         public DateTime? RevokeTokensOlderThan { get; } // can be null to NOT expire tokens manually for user
     }
@@ -304,7 +304,7 @@ namespace Common.Services
                 throw new ApiTokenException($"token revoked by [revokeTokensOlderThan] date token:{tokenCreatedDate.ToString()}, account:{user.RevokeTokensOlderThan.ToString()}"
                                             , "token revoked by date");
 
-            List<string> roles = user.GetAllRoles();
+            HashSet<string> roles = user.GetAllRoles();
             if (roles.Count ==0)
                 throw new ApiTokenException($"api user.Roles is null or empty '{clientId}'", "authorize error");
 

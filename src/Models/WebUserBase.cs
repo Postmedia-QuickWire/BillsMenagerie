@@ -16,7 +16,7 @@ namespace Common.Models
 	/// <summary>
 	/// simple user model with parent account
 	/// </summary>
-	public class WebUserBase : ITokenUser
+	public class WebUserBase 
 	{
 		public enum UserRole { NoAccess, ROUser, User, UserAdmin, Support, SiteAdmin };
 
@@ -113,22 +113,6 @@ namespace Common.Models
 		[Display(Name = "Last Modified By")]
 		public string LastModifiedBy { get; set; }
 
-		// api token management, not really used by QuickWire
-		[MaxLength(100)]
-		public string ApiKeySecretHash { get; set; }
-
-		[MaxLength(100)]
-		public string ApiKey { get; set; }
-		public DateTime? TokenCreated { get; set; }
-		public DateTime? LastTokenRefreshed { get; set; }
-		public DateTime? RevokeTokensOlderThan { get; set; }
-
-		public string LastBatchConfig { get; set; }
-
-		// we now expect accout_id:user_id for the token user identifier
-		public string TokenUserId { get => Id.ToString(); }
-		public string TokenAccountId { get => AccountId.ToString(); }
-
 		public string Name { get => Email; }
 
 		[JsonIgnore]
@@ -140,40 +124,44 @@ namespace Common.Models
 		public bool isSupportUser { get; set; }
 
 
-		// used for runtime usage display
+		// used for runtime usage display (may remove this, add to subclass)
 		[NotMapped]
 		public int Usage { get; set; }
 
 
 		// returns webAccount api roles as well
 		// note that webAccount MUST be valid/included else we (should) throw
-		public List<string> GetAllRoles()
+		public HashSet<string> GetAllRoles()
 		{
 			var roles = GetRoles();
-			if (WebAccount != null && !String.IsNullOrEmpty(WebAccount.Roles))
-				roles.AddRange(WebAccount.Roles.Split(new char[] { ',' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries));
-			if (WebAccount.IsIntegrator)
+            if (WebAccount != null && !String.IsNullOrEmpty(WebAccount.Roles))
+            {
+                roles.UnionWith(WebAccount.GetRoles());
+            }
+            if (WebAccount.IsIntegrator)
 				roles.Add("integrator");
 
 			return roles;
 		}
 
-		public List<string> GetRoles()
-		{
-			if (Roles != null)
-				return Roles.Split(new char[] { ',' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
-			return new List<string>();
-		}
+        // get this users roles only - doesn't include any inherited web account roles - see above
+        public HashSet<string> GetRoles()
+        {
+            if (_roles == null)
+            {
+                if (Roles != null)
+                    _roles = Roles.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToHashSet(StringComparer.OrdinalIgnoreCase);
+                else
+                    _roles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            return _roles;
+        }
 
-		public bool IsInRole(UserRole role)
+        private HashSet<string> _roles;
+
+        public bool IsInRole(UserRole role)
 		{
-			var srole = role.ToString();
-			foreach (var r in GetRoles())
-			{
-				if (srole.Equals(r, StringComparison.OrdinalIgnoreCase))
-					return true;
-			}
-			return false;
+            return GetRoles().Contains(role.ToString());
 		}
 		public void AddRole(UserRole role)
 		{
@@ -184,6 +172,7 @@ namespace Common.Models
 				else
 					Roles += ",";
 				Roles += role.ToString();
+                _roles = null;
 			}
 		}
 
