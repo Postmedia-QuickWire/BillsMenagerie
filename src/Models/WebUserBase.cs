@@ -119,14 +119,13 @@ namespace Common.Models
 		[Display(Name = "Account")]
 		public WebAccount WebAccount { get; set; }
 
+
+        /// <summary>
+        /// this is used for edit form setting the UserRole.Support in Roles
+        /// </summary>
 		[NotMapped]
 		[Display(Name = "Incident Support User Role")]
 		public bool isSupportUser { get; set; }
-
-
-		// used for runtime usage display (may remove this, add to subclass)
-		[NotMapped]
-		public int Usage { get; set; }
 
 
 		// returns webAccount api roles as well
