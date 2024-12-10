@@ -245,13 +245,6 @@ namespace Common.Models
 		public DateTime? SupportToDate { get; set; }
 
 		[NotMapped]
-		public bool HasProcurementUser { get; set; }
-
-		[NotMapped]
-		public bool HasBillingUser { get; set; }
-
-
-		[NotMapped]
 		[MaxLength(100)]
 		[Display(Name = "Integrator")]
 		public string IntegratorName { get; set; }
