@@ -191,9 +191,6 @@ namespace Common.Models
 		[MaxLength(1000)]
 		public string DownloadPerms { get; set; }
 
-		[MaxLength(100)]
-		public string DownloadKeyHash { get; set; }
-
 		[Display(Name = "Managed by Integrator")]
 		public int? IntegratorAccountId { get; set; }
 
