@@ -286,9 +286,11 @@ namespace Common.Models
 
 		public bool IsSupported()
 		{
-			if (NoSupportExpiry || SupportToDate == null)
+			if (NoSupportExpiry)
 				return true;
-			return SupportToDate >= DateTime.UtcNow;
+			if (SupportToDate == null)
+				return false;
+			return (DateTime.UtcNow - SupportToDate).Value.TotalHours < 24;
 		}
 
 
