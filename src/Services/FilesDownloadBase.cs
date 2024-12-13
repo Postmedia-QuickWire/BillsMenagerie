@@ -285,11 +285,15 @@ namespace Common.Classes
 							effdate = new DateTime(y, m, 1);
 							version = y * 100 + m;
 						}
-						else if (item.Value.ReType == "version") // parse version 11.22.33
+						else if (item.Value.ReType == "version") // parse version 11.22[.33]
 						{
 							int maj = Convert.ToInt32(M.Groups[1].Value);
 							int min = Convert.ToInt32(M.Groups[2].Value);
-							int bug = Convert.ToInt32(M.Groups[3].Value);
+							int bug = 0;
+							if (M.Groups.Count > 3)
+							{
+								bug = Convert.ToInt32(M.Groups[3].Value);
+							}
 							version = maj * 10000 + min * 100 + bug;
 						}
 
