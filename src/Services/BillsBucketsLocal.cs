@@ -86,8 +86,8 @@ namespace Common.Services
 					Created = finfo.LastWriteTime,
 					Size = (ulong)finfo.Length,
 
-					Hash = "xxx",
-					HashType = "sha256x",
+					Hash = "",
+					HashType = "",
 					Name = Path.GetFileName(f),
 					Path = Path.GetFileName(f),
 					StorageType = "LOC"
