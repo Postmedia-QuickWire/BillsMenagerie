@@ -18,7 +18,7 @@ namespace Common.Services
 		public BillsBucketsLocal(IConfiguration config, ILogger<BillsBucketsLocal> logger)
 		{
 			_logger = logger;
-			_localFolder = config["AppSettings:LocalBucketsTestFolder"];
+			_localFolder = config["AppSettings:LocalBucketsFolder"];
 		}
 
 		public async Task PutFileAsync(string bucket, string path, byte[] data, string mime = null, CancellationToken cancellationToken = default)
