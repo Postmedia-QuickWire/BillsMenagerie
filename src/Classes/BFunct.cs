@@ -156,7 +156,21 @@ namespace Common.Classes
 		}
 
 
-		public static bool DeleteFolder(string FolderPath, bool fDeleteTopFolder = false)
+		// ignores any exceptions
+		public static bool DeleteFile(string file)
+		{
+			try
+			{
+				System.IO.File.Delete(file);
+				return true;
+            }
+            catch (Exception)
+			{
+			}
+            return false;
+        }
+
+        public static bool DeleteFolder(string FolderPath, bool fDeleteTopFolder = false)
 		{
 			bool ok = _DeleteFolder(FolderPath);
 			if (ok && fDeleteTopFolder)
