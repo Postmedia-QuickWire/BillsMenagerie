@@ -52,7 +52,7 @@ namespace Common.Classes
 		}
 
 
-		public static string RunCommand(string command, string args) //, string wdir =null)
+		public static async Task<string> RunCommand(string command, string args=null) //, string wdir =null)
 		{
 			var process = new Process()
 			{
@@ -70,7 +70,7 @@ namespace Common.Classes
 			process.Start();
 			string output = process.StandardOutput.ReadToEnd();
 			string error = process.StandardError.ReadToEnd();
-			process.WaitForExit();
+			await process.WaitForExitAsync();
 
 			if (string.IsNullOrEmpty(error)) { return output; }
 			else { return error; }
