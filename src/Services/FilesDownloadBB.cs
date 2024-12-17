@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using StreetPerfect.Controllers;
-using System.Net;
 using WebSite.Models;
 using Common.Services;
 
