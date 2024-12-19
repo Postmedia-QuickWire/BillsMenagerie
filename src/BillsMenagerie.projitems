@@ -33,7 +33,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controlers\TokenController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\UserFileManagementBB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\UserFileManagementFolder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\ViewRender.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controlers\CheckController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controlers\HelpController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controlers\SwaggerUIController.cs" />
