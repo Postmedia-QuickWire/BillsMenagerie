@@ -52,6 +52,14 @@ namespace Common.Models
 	}
 
 
+	public class TimedSubmitButtonModel
+	{
+        public string token1 { get; set; }
+        public string token2 { get; set; }
+        public string token3 { get; set; }
+    }
+
+
 	public class UserLogin
 	{
 		[Required(ErrorMessage = "The UserName field is required.")]
