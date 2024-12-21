@@ -61,7 +61,7 @@ namespace Common.Services
 		public string StorageType { get; set; }  // up to the implementation to set as they want (this is NOT StoreageClass - but I could store that too)
 	}
 
-
+#if bucket_tests
 	public class TestBillsBuckets
 	{
 		private readonly ILoggerFactory _loggerFactory;
@@ -157,5 +157,5 @@ namespace Common.Services
 			return msg.ToString();
 		}
 	}
-
+#endif
 }
