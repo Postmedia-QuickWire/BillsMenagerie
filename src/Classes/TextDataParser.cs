@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -67,7 +68,7 @@ namespace Common.Classes
 
 		public ParserConfig Config { get; set; }
 
-		public List<TRowObj> Rows { get; set; } = new List<TRowObj>();
+		public ObservableCollection<TRowObj> Rows { get; set; } = new ObservableCollection<TRowObj>();
 
 		public List<string> LineBuf { get; set; } = new List<string>();
 
