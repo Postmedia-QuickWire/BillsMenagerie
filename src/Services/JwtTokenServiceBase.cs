@@ -208,7 +208,7 @@ namespace Common.Services
                 throw new ApiTokenException($"api user account disabled '{tok_req.ClientId}'", "account disabled");
 
             if (String.IsNullOrWhiteSpace(user.TokenUserId))
-                throw new ApiTokenException($"api user.Id is null or empty '{tok_req.ClientId}'", "auth error");
+                throw new ApiTokenException($"api user.AddrId is null or empty '{tok_req.ClientId}'", "auth error");
 
             var roles = user.GetAllRoles();
 
