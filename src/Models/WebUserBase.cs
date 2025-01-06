@@ -248,7 +248,7 @@ namespace Common.Models
 		[MaxLength(100)]
 		[Display(Name = "Integrator")]
 		public string IntegratorName { get; set; }
-		public HashSet<string> GetRoles()
+		public virtual HashSet<string> GetRoles()
 		{
             if (_roles == null)
             {
@@ -266,7 +266,7 @@ namespace Common.Models
         [NotMapped]
         private HashSet<string> _downloadPerms;
 
-        public bool IsInRole(string role)
+        public virtual bool IsInRole(string role)
 		{
             return GetRoles().Contains(role);
 		}
@@ -284,7 +284,7 @@ namespace Common.Models
             }
 		}
 
-		public bool IsSupported()
+		public virtual bool IsSupported()
 		{
 			if (NoSupportExpiry)
 				return true;
@@ -294,7 +294,7 @@ namespace Common.Models
 		}
 
 
-        public bool CanDownload(HashSet<string> dl_privs)
+        public virtual bool CanDownload(HashSet<string> dl_privs)
         {
             if (dl_privs == null || dl_privs.Count == 0)
             {
@@ -308,12 +308,12 @@ namespace Common.Models
             return false;
         }
 
-        public bool CanDownload(string dl_priv)
+        public virtual bool CanDownload(string dl_priv)
         {
             return GetDownloadPerms().Contains(dl_priv);
         }
 
-        public HashSet<string> GetDownloadPerms()
+        public virtual HashSet<string> GetDownloadPerms()
         {
             if (_downloadPerms == null)
             {
@@ -330,7 +330,7 @@ namespace Common.Models
         }
 
 
-        public void AddDownloadPerm(string dl_priv)
+        public virtual void AddDownloadPerm(string dl_priv)
         {
             if (!CanDownload(dl_priv))
             {
