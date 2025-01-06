@@ -11,6 +11,9 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Classes\AccentNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\BFunct.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\FolderEventQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\MultiFolderEventQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\MyAssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\CommonWebModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DataTablesAjaxModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\WebUserBase.cs" />
@@ -25,6 +28,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\FilesDownloadBB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IUserFileManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\JwtTokenBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\MongoMessageQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\NovellLdapAuth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ServerStateContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\RequestPiplineTemplateMiddleware.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\SerializableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\StringHash.cs" />
