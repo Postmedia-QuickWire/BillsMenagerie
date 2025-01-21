@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
+using WebSite.Models;
 
 namespace Common.Models
 {
@@ -27,12 +29,16 @@ namespace Common.Models
 	public class WebMailModel : WebMailTemplateModel
 	{
 		public string TestEmail { get; set; }
+        public bool DryRun { get; set; } = false;
 
-		public Dictionary<string, string> SubstiVars { get; set; }
+
+        public Dictionary<string, string> SubstiVars { get; set; }
 
 		public Dictionary<string, string> EmailList { get; set; }
 
 		public IEnumerable<SelectListItem> Templates { get; set; }
+
+        public List<MonthlyMailLog> MailLog {  get; set; } 
 	}
 
 	public class WebMailSendToAddress
