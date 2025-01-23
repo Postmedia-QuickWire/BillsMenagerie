@@ -132,7 +132,9 @@ namespace Common.Services
 		{
             if (_localFolder == null)
                 throw new ArgumentException("AppSettings::LocalBucketsFolder is not defined");
-			var path_parts = path.Split("/").ToList();
+            if (path == null)
+                path = "";
+            var path_parts = path.Split("/").ToList();
 			path_parts.Insert(0, bucket);
 			path_parts.Insert(0, _localFolder);
 			var full_path = Path.Combine(path_parts.ToArray());
