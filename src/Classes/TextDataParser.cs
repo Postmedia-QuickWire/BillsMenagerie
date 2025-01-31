@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Lucene.Net.Index;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Common.Classes
@@ -72,6 +73,8 @@ namespace Common.Classes
 
         public List<string> LineBuf { get; set; } = new List<string>();
 
+        public List<string> Errors { get; set; } = new List<string>();
+
         // keyed on column name - case sensitive
         public Dictionary<string, ColumnConfig> Columns { get; } = new Dictionary<string, ColumnConfig>();
         public TextDataParser(ParserConfig config = null)
@@ -87,7 +90,7 @@ namespace Common.Classes
                 new_cc.Name = cc.Name;
                 new_cc.Width = cc.Width; // updated at load time (if delimited)
                                          //new_cc.Offset = cc.Offset; no need
-                new_cc.Ordinal = ord++;
+                new_cc.Ordinal = cc.Ordinal;
                 Columns[cc.Name] = new_cc;
             }
         }
@@ -131,10 +134,71 @@ namespace Common.Classes
         public void Parse(string filename, Func<int, string[], TRowObj> OnNewRow)
         {
             using StreamReader reader = new StreamReader(filename, Config.encoding_in, Config.CheckForByteMarks);
-            Parse(reader, OnNewRow);
+            XXParse(reader, OnNewRow);
         }
 
+
         public void Parse(StreamReader reader, Func<int, string[], TRowObj> OnNewRow)
+        {
+            try
+            {
+                using var myReader = new TextFieldParser(reader);
+                if (Config.isFixedWidth)
+                {
+                    myReader.TextFieldType = FieldType.FixedWidth;
+                    myReader.TrimWhiteSpace = true;
+                    var wids = new List<int>();
+                    foreach (var cc in Config.Columns)
+                    {
+                        wids.Add(cc.Width);
+                    }
+                    myReader.FieldWidths = wids.ToArray();
+                }
+                else
+                {
+                    myReader.TextFieldType = FieldType.Delimited;
+                    myReader.SetDelimiters(Config.Delimiter);
+                    myReader.TrimWhiteSpace = true;
+                    myReader.HasFieldsEnclosedInQuotes = true;
+                }
+
+                while (!myReader.EndOfData)
+                {
+                    try
+                    {
+                        if (myReader.LineNumber >= Config.StartRow)
+                        {
+                            var fields = myReader.ReadFields();
+                            var rec = OnNewRow((int)myReader.LineNumber, fields);
+                            if (rec != null)
+                            {
+                                Rows.Add(rec);
+                                if (Config.MaxRows > 0 && myReader.LineNumber >= Config.MaxRows)
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            myReader.ReadLine();
+                        }
+                    }
+                    catch (MalformedLineException e) 
+                    {
+                        Errors.Add($"Error on line {e.LineNumber}, err:{e.Message}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Errors.Add($"Error reading csv file, {e.Message}");
+                throw new Exception($"Error reading csv file, {e.Message}");
+            }
+
+        }
+
+
+
+        public void XXParse(StreamReader reader, Func<int, string[], TRowObj> OnNewRow)
         {
             try
             {
@@ -202,8 +266,9 @@ namespace Common.Classes
         private string[] ParseDelimitedLine(string lineBuf)
         {
             List<string> cols = new List<string>();
-            // ah I thought there'd be more to it...
-            // maybe handle more than one delimiter; lineBuf.Split(string[])  or mutli chars lineBuf.Split(char[])
+            // need to handle quotes....
+            
+
             var all_cols = lineBuf.Split(Config.Delimiter, StringSplitOptions.TrimEntries);
             foreach (var cc in Config.Columns)
             {
