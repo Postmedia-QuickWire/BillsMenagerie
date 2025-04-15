@@ -134,6 +134,8 @@ namespace Common.Services
         public Task<TokenResponse> NewToken(TokenRequest tok_req);
         public Task<TokenResponse> RefreshToken(TokenRefreshRequest tok_req);
 
+        public void ClearUserCache();
+
     }
 
     public interface ITokenUser
@@ -158,6 +160,7 @@ namespace Common.Services
             _logger = logger;
         }
 
+        public virtual void ClearUserCache() { }
 
         // must override to authenticate the user for a new token request
         protected abstract Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
