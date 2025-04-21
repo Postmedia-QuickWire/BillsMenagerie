@@ -17,7 +17,7 @@ namespace Common.Controllers
 		[HttpGet]
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public ActionResult<string> Index()
-{
+        {
 			//_logger.LogInformation("Health check"); 
 			return "ok";
 		}
