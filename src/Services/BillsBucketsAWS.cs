@@ -45,7 +45,7 @@ namespace Common.Services
 
         public async Task PutFileAsync(string bucket, string path, Stream istream, string mime = null, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("AWS PutFileAsync, {bucket}, {path}", bucket, path);
+            _logger.LogDebug("AWS PutFileAsync, {bucket}, {path}", bucket, path);
             await _s3client.PutObjectAsync(new PutObjectRequest()
             {
                 BucketName = bucket,
@@ -65,7 +65,7 @@ namespace Common.Services
         {
             try
             {
-                _logger.LogInformation("AWS WriteToStreamAsync, {bucket}, {path}", bucket, path);
+                _logger.LogDebug("AWS WriteToStreamAsync, {bucket}, {path}", bucket, path);
                 var resp = await _s3client.GetObjectAsync(new GetObjectRequest()
                 {
                     BucketName = bucket,
@@ -83,7 +83,7 @@ namespace Common.Services
         {
             try
             {
-                _logger.LogInformation("AWS DeleteFileAsync, {bucket}, {path}", bucket, path);
+                _logger.LogDebug("AWS DeleteFileAsync, {bucket}, {path}", bucket, path);
                 await _s3client.DeleteObjectAsync(bucket, path, cancellationToken);
             }
             catch (AmazonS3Exception ex)
@@ -95,7 +95,7 @@ namespace Common.Services
         public async Task<List<BucketFile>> ListFilesAsync(string bucket, string path, CancellationToken cancellationToken = default)
         {
 
-            _logger.LogInformation("AWS ListFilesAsync, {bucket}, {path}", bucket, path);
+            _logger.LogDebug("AWS ListFilesAsync, {bucket}, {path}", bucket, path);
             var list = new List<BucketFile>();
             try
             {
@@ -150,7 +150,7 @@ namespace Common.Services
         }
         public async Task DownloadFileAsync(string bucket, string path, string localFilename, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("AWS DownloadFileAsync, {bucket}, {path}, {localFilename}", bucket, path, localFilename);
+            _logger.LogDebug("AWS DownloadFileAsync, {bucket}, {path}, {localFilename}", bucket, path, localFilename);
             using var fs = new FileStream(localFilename, FileMode.OpenOrCreate | FileMode.Truncate, FileAccess.Write);
             await WriteToStreamAsync(bucket, path, fs, cancellationToken);
         }
