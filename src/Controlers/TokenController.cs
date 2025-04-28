@@ -70,7 +70,7 @@ namespace Common.Controllers
 				{
 					resp.Msg = ex.userMsg;
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
-					_logger.LogError("Error creating token for '{clientId}', err={Message}", tok_req.ClientId, ex.Message);
+					_logger.LogError("Error creating token for '{clientId}', err={Message}, ip={ip}", tok_req.ClientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress);
 				}
 				catch (Exception ex)
 				{
@@ -78,7 +78,7 @@ namespace Common.Controllers
 						resp.Msg = "unable to create token";
 
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
-					_logger.LogError("Error creating token for '{clientId}', err={Message}", tok_req.ClientId, ex.Message);
+					_logger.LogError("Error creating token for '{clientId}', err={Message}, ip={ip}", tok_req.ClientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress);
 				}
 
 			}
@@ -111,7 +111,7 @@ namespace Common.Controllers
 				{
 					resp.Msg = ex.userMsg;
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
-					_logger.LogError("Error refreshing token for '{clientId}', api_err={Message}", clientId, ex.Message);
+					_logger.LogError("Error refreshing token for '{clientId}', api_err={Message}, ip={ip}", clientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress);
 				}
 				catch (Exception ex)
 				{
@@ -119,7 +119,7 @@ namespace Common.Controllers
 						resp.Msg = "unable to refresh token";
 
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
-					_logger.LogError("Error refreshing token for '{clientId}', err={Message}", clientId, ex.Message);
+					_logger.LogError("Error refreshing token for '{clientId}', err={Message}, ip={ip}", clientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress);
 				}
 
 			}
@@ -139,7 +139,7 @@ namespace Common.Controllers
 			catch (Exception ex)
 			{
 				//EndpointException(ex, req);
-				_logger.LogError("no_auth_test error, {m}", ex.Message);
+				_logger.LogError("no_auth_test error, {m}, ip={ip}", ex.Message, Request.HttpContext.Connection.RemoteIpAddress);
 				return StatusCode(502, new { err = ex.Message });
 			}
 		}
