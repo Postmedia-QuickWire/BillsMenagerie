@@ -39,13 +39,15 @@ namespace Common.Controllers
 	public class TokenController : ControllerBase
     {
 		private ILogger<TokenController> _logger;
-		private readonly IBearerTokenService _tokenService;
+        private readonly IBearerTokenService _tokenService;
+        private readonly bool _logTokenCreate = false;
 
-		public TokenController(IBearerTokenService tokenService, ILogger<TokenController> logger)
+        public TokenController(IConfiguration config, IBearerTokenService tokenService, ILogger<TokenController> logger)
 		{
 			_logger = logger;
 			_tokenService = tokenService;
-		}
+            _logTokenCreate = config["AppSettings:LogTokenCreation"] == "True";
+        }
 
 
 		// POST: /Token/
@@ -65,8 +67,12 @@ namespace Common.Controllers
 				try
 				{
 					resp = await _tokenService.NewToken(tok_req);
-				}
-				catch(ApiTokenException ex)
+                    if (_logTokenCreate)
+                    {
+                        _logger.LogInformation(">> creating token for '{clientId}', ip={ip}", tok_req.ClientId, Request.HttpContext.Connection.RemoteIpAddress);
+                    }
+                }
+                catch (ApiTokenException ex)
 				{
 					resp.Msg = ex.userMsg;
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -106,8 +112,8 @@ namespace Common.Controllers
 				try
 				{
 					resp = await _tokenService.RefreshToken(tok_req);
-				}
-				catch (ApiTokenException ex)
+                }
+                catch (ApiTokenException ex)
 				{
 					resp.Msg = ex.userMsg;
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
