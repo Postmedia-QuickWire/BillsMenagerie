@@ -83,7 +83,7 @@ namespace Common.Classes
             if (Config == null)
                 Config = new ParserConfig();
 
-            int ord = 0;
+            //int ord = 0;
             foreach (var cc in Config.Columns)
             {
                 var new_cc = new ColumnConfig();
