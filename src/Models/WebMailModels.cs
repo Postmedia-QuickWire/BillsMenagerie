@@ -24,7 +24,8 @@ namespace Common.Models
 		public bool SendToTechs { get; set; }
 		public bool SendToAll { get; set; }
 		public bool IncludeNullPasswords { get; set; }
-	}
+        public IList<IFormFile> Attachments { get; set; }
+    }
 
 	public class WebMailModel : WebMailTemplateModel
 	{
