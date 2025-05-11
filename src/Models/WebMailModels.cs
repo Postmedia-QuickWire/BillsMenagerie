@@ -24,6 +24,8 @@ namespace Common.Models
 		public bool SendToTechs { get; set; }
 		public bool SendToAll { get; set; }
 		public bool IncludeNullPasswords { get; set; }
+
+        // use multiple attrib in file input for multiple file upload
         public IList<IFormFile> Attachments { get; set; }
     }
 
