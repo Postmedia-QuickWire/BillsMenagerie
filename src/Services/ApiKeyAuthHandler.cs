@@ -105,8 +105,8 @@ namespace Common.Services
     {
         public IServiceProvider ServiceProvider { get; set; }
 
-        private readonly ILogger<ApiKeyAuthHandler> _logger;
-        private readonly IApiKeyService _ApiKeyService;
+        protected ILogger<ApiKeyAuthHandler> _logger;
+        protected IApiKeyService _ApiKeyService;
 
         public ApiKeyAuthHandler(IOptionsMonitor<ApiKeyAuthOptions> options
             , ILoggerFactory logger, UrlEncoder encoder //, ISystemClock clock
