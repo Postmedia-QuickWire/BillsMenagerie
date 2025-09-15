@@ -21,8 +21,9 @@ namespace Common.Models
 		public bool SendToDevelopers { get; set; }
 		public bool SendToBilling { get; set; }
 		public bool SendToProcurement { get; set; }
-		public bool SendToTechs { get; set; }
-		public bool SendToAll { get; set; }
+        public bool SendToTechs { get; set; }
+        public bool ExcludeManagedAccounts { get; set; }
+        public bool SendToAll { get; set; }
 		public bool IncludeNullPasswords { get; set; }
 
         // use multiple attrib in file input for multiple file upload
