@@ -43,10 +43,12 @@ namespace Common.Models
 		public string Email { get; set; }
 
 		[MaxLength(50)]
-		public string Phone { get; set; }
+        [Phone]
+        public string Phone { get; set; }
 
 		[MaxLength(50)]
-		public string Cell { get; set; }
+        [Phone]
+        public string Cell { get; set; }
 
 		[MaxLength(1000)]
 		public string Roles { get; set; }
