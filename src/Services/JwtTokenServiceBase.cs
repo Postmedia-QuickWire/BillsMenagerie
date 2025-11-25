@@ -142,6 +142,12 @@ namespace Common.Services
     {
         public string TokenUserId { get; }
         public string TokenAccountId { get; }
+
+        /// <summary>
+        /// aws id is optional and in my case web account based (not user account based)
+        /// the aws id will be added to the token as the Serial claim type
+        /// </summary>
+        public string TokenAwsAccountId { get; }
         public string Name { get; }
         public HashSet<string> GetAllRoles();  //list of roles separated by commas
         public bool IsDisabled { get; }
@@ -225,12 +231,17 @@ namespace Common.Services
             // Make the bearer token
             // we add the creation date (created by clientId NOT by refresh - we add this back in during refresh)
             // sept 2022 bug, I was creating the token using the PASSED request name, this caused the refresh token to recreate using this name 
-            string access_token = MakeToken(user.Name, roles.ToArray())
+            var tokenBuilder = MakeToken(user.Name, roles.ToArray())
                                     .AddClaim(_jwtSettings.Claim_TokenCreatedDate, created_dt.Ticks.ToString())
                                     .AddClaim(ClaimTypes.NameIdentifier, user.TokenUserId)
-                                    .AddClaim(ClaimTypes.UserData, user.TokenAccountId)
-                                    .Build().Value;
+                                    .AddClaim(ClaimTypes.UserData, user.TokenAccountId);
+                                    
+            if (!String.IsNullOrEmpty(user.TokenAwsAccountId))
+            {
+                tokenBuilder.AddClaim(ClaimTypes.SerialNumber, user.TokenAwsAccountId);
+            }
 
+            string access_token = tokenBuilder.Build().Value;
 
             TokenResponse resp = new TokenResponse();
 
@@ -319,11 +330,17 @@ namespace Common.Services
 
             // Make the bearer token
             // we add the creation date (created by clientId NOT by refresh - we add this back in during refresh)
-            string access_token = MakeToken(clientId, roles.ToArray())
+            var tokenBuilder = MakeToken(clientId, roles.ToArray())
                                     .AddClaim(_jwtSettings.Claim_TokenCreatedDate, token_created_date) // re-add the token created date
                                     .AddClaim(ClaimTypes.NameIdentifier, user.TokenUserId)
-                                    .AddClaim(ClaimTypes.UserData, user.TokenAccountId)
-                                    .Build().Value;
+                                    .AddClaim(ClaimTypes.UserData, user.TokenAccountId);
+
+            if (!String.IsNullOrEmpty(user.TokenAwsAccountId))
+            {
+                tokenBuilder.AddClaim(ClaimTypes.SerialNumber, user.TokenAwsAccountId);
+            }
+
+            string access_token = tokenBuilder.Build().Value;
 
             TokenResponse resp = new TokenResponse();
 
