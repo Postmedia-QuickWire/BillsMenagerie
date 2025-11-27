@@ -236,11 +236,6 @@ namespace Common.Services
                                     .AddClaim(ClaimTypes.NameIdentifier, user.TokenUserId)
                                     .AddClaim(ClaimTypes.UserData, user.TokenAccountId);
                                     
-            if (!String.IsNullOrEmpty(user.TokenAwsAccountId))
-            {
-                tokenBuilder.AddClaim(ClaimTypes.SerialNumber, user.TokenAwsAccountId);
-            }
-
             string access_token = tokenBuilder.Build().Value;
 
             TokenResponse resp = new TokenResponse();
@@ -334,11 +329,6 @@ namespace Common.Services
                                     .AddClaim(_jwtSettings.Claim_TokenCreatedDate, token_created_date) // re-add the token created date
                                     .AddClaim(ClaimTypes.NameIdentifier, user.TokenUserId)
                                     .AddClaim(ClaimTypes.UserData, user.TokenAccountId);
-
-            if (!String.IsNullOrEmpty(user.TokenAwsAccountId))
-            {
-                tokenBuilder.AddClaim(ClaimTypes.SerialNumber, user.TokenAwsAccountId);
-            }
 
             string access_token = tokenBuilder.Build().Value;
 
