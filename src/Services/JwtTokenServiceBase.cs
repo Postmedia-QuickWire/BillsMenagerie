@@ -134,6 +134,8 @@ namespace Common.Services
         public Task<TokenResponse> NewToken(TokenRequest tok_req);
         public Task<TokenResponse> RefreshToken(TokenRefreshRequest tok_req);
 
+        // added so we can easily use an apikey to auth standalone anonymous endpoints
+        public Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
         public void ClearUserCache();
 
     }
@@ -169,7 +171,7 @@ namespace Common.Services
         public virtual void ClearUserCache() { }
 
         // must override to authenticate the user for a new token request
-        protected abstract Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
+        public abstract Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
 
         // must override to fetch the user on a refresh token request
         protected abstract Task<ITokenUser> GetTokenUserForId(string id);
