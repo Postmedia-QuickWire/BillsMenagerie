@@ -290,9 +290,16 @@ namespace Common.Classes
 							int bug = 0;
 							if (M.Groups.Count > 3)
 							{
-								bug = Convert.ToInt32(M.Groups[3].Value);
+								try
+								{
+									bug = Convert.ToInt32(M.Groups[3].Value);
+								}
+								catch (Exception)
+								{
+									bug = 0;
+								}
 							}
-							version = maj * 10000 + min * 100 + bug;
+							version = maj * 10000 + min * 10 + bug;
 						}
 
 					}
