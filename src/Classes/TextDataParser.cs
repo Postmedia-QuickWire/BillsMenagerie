@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Lucene.Net.Index;
+//using Lucene.Net.Index;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Common.Classes
