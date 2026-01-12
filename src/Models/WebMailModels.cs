@@ -45,7 +45,21 @@ namespace Common.Models
         public List<MonthlyMailLog> MailLog {  get; set; } 
 	}
 
-	public class WebMailSendToAddress
+    public class MonthlyMailLog
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Subject { get; set; }
+        public int EmailsSent { get; set; }
+        public string UserName { get; set; }
+
+        public string SendToFlags { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime SendDate { get; set; } = DateTime.UtcNow;
+    }
+
+    public class WebMailSendToAddress
 	{
 		public string Email { get; set; }
 		public string AccountName { get; set; }
