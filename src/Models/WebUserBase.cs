@@ -298,7 +298,7 @@ namespace Common.Models
 
         public virtual bool CanDownload(HashSet<string> dl_privs)
         {
-            if (dl_privs == null || dl_privs.Count == 0)
+            if (dl_privs == null || dl_privs.Count == 0 || dl_privs.Contains("dl_anonymous"))
             {
                 return true; //null access means anyone can download!
             }
