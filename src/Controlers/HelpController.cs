@@ -259,7 +259,11 @@ namespace Common.Controllers
 					.Build();
 				var result = Markdig.Markdown.ToHtml(raw_md, pipeline);
 
-				return new HelpFile()
+                // this fixes a python markup bug that splits the \t\n with a <span>
+                result = result.Replace("\r</span>", "</span>\r");
+
+
+                return new HelpFile()
 				{
 					Html = result,
 					Md = raw_md,
