@@ -8,6 +8,10 @@ namespace Common.Controllers
         /// I use a swagger dark theme from https://github.com/ravisankarchinnam/openapi-swagger-dark-theme
         /// I inject the path to this controller /SwaggerUI/css/[anything]
         /// I ignore [anything] as I've only registered one file with swagger at this location
+        /// 
+        /// *** I don't use this any more, see swagger_cust.js
+        /// swagger has its own dark mode -- finally
+        /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
