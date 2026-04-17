@@ -88,8 +88,10 @@ namespace Common.Models
 		[Display(Name = "Email Update Notices")]
 		public bool MailUpdateNotice { get; set; }
 
+        [Display(Name = "Email Tier Limit Notices")]
+        public bool MailTierLimitNotice { get; set; } = false;
 
-		[Display(Name = "Procurement Contact")]
+        [Display(Name = "Procurement Contact")]
 		public bool IsProcurementContact { get; set; } = false;
 
 		[Display(Name = "User Account Lock")]
@@ -245,6 +247,17 @@ namespace Common.Models
 		[DataType(DataType.Date)]
 		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
 		public DateTime? SupportToDate { get; set; }
+
+
+        [Range(0, 99)]
+        [Display(Name = "Tier Limit Alert 1")]
+        public int? TierLimitAlertPercent1 { get; set; } = 80;
+
+
+        [Range(0, 99)]
+        [Display(Name = "Tier Limit Alert 2")]
+        public int? TierLimitAlertPercent2 { get; set; } = 90;
+
 
 		[NotMapped]
 		[MaxLength(100)]
