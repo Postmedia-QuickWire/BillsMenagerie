@@ -18,7 +18,9 @@ namespace Common.Models
 	/// </summary>
 	public class WebUserBase 
 	{
-		public enum UserRole { NoAccess, ROUser, User, UserAdmin, Support, SiteAdmin };
+        public enum EmailSubscribeType { None, All, TierLimitAlerts, TechContact, UpdateNotices, NewsLetter, BillingContact, ProcurementContact, SubscribeNum };
+
+        public enum UserRole { NoAccess, ROUser, User, UserAdmin, Support, SiteAdmin };
 
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -249,14 +251,14 @@ namespace Common.Models
 		public DateTime? SupportToDate { get; set; }
 
 
-        [Range(0, 99)]
+        [Range(0, 500)]
         [Display(Name = "Tier Limit Alert 1")]
         public int? TierLimitAlertPercent1 { get; set; } = 80;
 
 
-        [Range(0, 99)]
+        [Range(0, 500)]
         [Display(Name = "Tier Limit Alert 2")]
-        public int? TierLimitAlertPercent2 { get; set; } = 90;
+        public int? TierLimitAlertPercent2 { get; set; } = 120;
 
 
 		[NotMapped]
