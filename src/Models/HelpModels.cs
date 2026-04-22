@@ -2,7 +2,20 @@
 namespace Common.Models
 {
 
-	public class HelpSearch
+    public class HelpSearchModel
+    {
+        public string Words { get; set; }
+        public bool HighlightWords { get; set; }
+    }
+
+    public class HelpIndexModel
+    {
+        public HelpSearchModel SearchModel { get; set; }
+
+        public HelpFile HelpFile { get; set; }
+    }
+
+    public class HelpSearchType
 	{
 		public string Words { get; set; }
 	}
@@ -12,6 +25,7 @@ namespace Common.Models
 		public List<HelpSearchHit> Hits { get; set; } = new List<HelpSearchHit>();
         public string err { get; set; }
 	}
+
 	public class HelpSearchHit
 	{
 		public string Name { get; set; }

@@ -90,14 +90,15 @@ namespace Common.Controllers
 			try
 			{
                 await InitViewBag();
-
+                ViewBag.KeyWords = kw;
                 ViewBag.HelpSubIndex = id;
 				if (!String.IsNullOrEmpty(sid))
 				{
 					ViewBag.HelpSubSubIndex = sid;
 					id = sid;
 				}
-				return await LoadHelpView(id, kw);
+                var model = await LoadHelpFileModel(id, kw);
+                return View("index", model);
 			}
 			catch (Exception ex)
 			{
@@ -201,7 +202,7 @@ namespace Common.Controllers
 
 		// used for ajax post while typing in search ctrl
 		[HttpPost]
-		public async Task<List<HelpSearchHit>> TypeSearch([FromBody] HelpSearch model)
+		public async Task<List<HelpSearchHit>> TypeSearch([FromBody] HelpSearchType model)
 		{
             await CommonViewBag();
             var found = new List<HelpSearchHit>();
@@ -265,12 +266,6 @@ namespace Common.Controllers
 				_logger.LogError("Unable to load help index, {e}, {path}", ex, path);
 				throw;
 			}
-		}
-
-		private async Task<IActionResult> LoadHelpView(string md_title, string key_words=null)
-		{
-			await InitViewBag();
-			return View("index", await LoadHelpFileModel(md_title, key_words));
 		}
 
 		private async Task InitViewBag()
