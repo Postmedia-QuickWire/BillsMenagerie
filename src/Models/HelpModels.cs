@@ -10,20 +10,23 @@ namespace Common.Models
 	public class HelpSearchHits
 	{
 		public List<HelpSearchHit> Hits { get; set; } = new List<HelpSearchHit>();
+        public string err { get; set; }
 	}
 	public class HelpSearchHit
 	{
 		public string Name { get; set; }
 		public string Desc { get; set; }
-		public string TopicKey { get; set; }
-		public float Rank { get; set; }
+        public string TopicKey { get; set; }
+        public string TopicParentKey { get; set; }
+        public float Rank { get; set; }
 		public List<string> Frags { get; set; } = new List<string>();
 	}
 
 	public class HelpIndexItem
 	{
 		public string Key { get; set; }
-		public string Name { get; set; }
+        public string ParentKey { get; set; }
+        public string Name { get; set; }
 		public string Desc { get; set; }
 		public List <HelpIndexItem> Items { get; set; }
 	}

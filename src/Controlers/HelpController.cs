@@ -20,6 +20,8 @@ using StreetPerfect.Models;
 using Common.Classes;
 using WebSite.Controllers;
 using Common.Models;
+using System.Text.RegularExpressions;
+using System.Web;
 
 
 namespace Common.Controllers
@@ -82,17 +84,20 @@ namespace Common.Controllers
 		}
 
 
-		public async Task<IActionResult> Topic(string id, string sid=null)
+        [Route("{controller}/topic/{id}/{sid?}")]
+		public async Task<IActionResult> Topic(string id, string sid, [FromQuery] string kw)
 		{
 			try
 			{
-				ViewBag.HelpSubIndex = id;
+                await InitViewBag();
+
+                ViewBag.HelpSubIndex = id;
 				if (!String.IsNullOrEmpty(sid))
 				{
 					ViewBag.HelpSubSubIndex = sid;
 					id = sid;
 				}
-				return await LoadHelpView(id);
+				return await LoadHelpView(id, kw);
 			}
 			catch (Exception ex)
 			{
@@ -127,60 +132,79 @@ namespace Common.Controllers
 			}
 		}
 
+        /// <summary>
+        /// called from search box
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
 		[HttpGet]
 		public async Task<IActionResult> Search(string q)
 		{
-			await CommonViewBag();
+            var found = new HelpSearchHits();
+            try
+            {
+                await InitViewBag();
 
-			var found = new HelpSearchHits();
-			if (!String.IsNullOrEmpty(q))
-			{
-				var searcher = await GetSearcher();
-				var analyzer = new StandardAnalyzer(lucene_ver);
-				StandardQueryParser queryParserHelper = new StandardQueryParser(analyzer);
-				Query query = queryParserHelper.Parse(q, "text");
+                if (!String.IsNullOrEmpty(q))
+                {
+                    ViewBag.Keywords = q;
+                    var searcher = await GetSearcher();
+                    if (searcher != null)
+                    {
+                        var analyzer = new StandardAnalyzer(lucene_ver);
+                        StandardQueryParser queryParserHelper = new StandardQueryParser(analyzer);
+                        Query query = queryParserHelper.Parse(q, "text");
 
-				var hits = searcher.Search(query, 20).ScoreDocs;
+                        var hits = searcher.Search(query, 20).ScoreDocs;
 
-				SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter("<mark>", "</mark>");
-				Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query));
+                        SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter("<mark>", "</mark>");
+                        Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query));
 
-				foreach (var hit in hits)
-				{
-					var doc = searcher.Doc(hit.Doc);
+                        foreach (var hit in hits)
+                        {
+                            var doc = searcher.Doc(hit.Doc);
 
-					string text = doc.Get("text");
-					TokenStream tokenStream = TokenSources.GetAnyTokenStream(_indexWriter.GetReader(false), hit.Doc, "text", analyzer);
-					TextFragment[] frags = highlighter.GetBestTextFragments(tokenStream, text, false, 4);
+                            string text = doc.Get("text");
+                            TokenStream tokenStream = TokenSources.GetAnyTokenStream(_indexWriter.GetReader(false), hit.Doc, "text", analyzer);
+                            TextFragment[] frags = highlighter.GetBestTextFragments(tokenStream, text, false, 4);
 
-					var help_hit = new HelpSearchHit()
-					{
-						Name = doc.Get("name"),
-						Desc = doc.Get("desc"),
-						TopicKey = doc.Get("key"),
-						Rank = hit.Score,
-					};
+                            var help_hit = new HelpSearchHit()
+                            {
+                                Name = doc.Get("name"),
+                                Desc = doc.Get("desc"),
+                                TopicKey = doc.Get("key"),
+                                TopicParentKey = doc.Get("parent"),
+                                Rank = hit.Score,
+                            };
 
-					foreach (var frag in frags)
-					{
-						if (frag?.Score > 0)
-						{
-							help_hit.Frags.Add(frag.ToString());
-						}
-					}
+                            foreach (var frag in frags)
+                            {
+                                if (frag?.Score > 0)
+                                {
+                                    help_hit.Frags.Add(frag.ToString());
+                                }
+                            }
 
-					found.Hits.Add(help_hit);
-				}
-			}
-			return  View(found);
-		}
+                            found.Hits.Add(help_hit);
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("help search error {m}, query str={q}", e.Message, q);
+                found.err = $"There was an error running your search \"{ q}\"";
+            }
+            return View(found);
+        }
 
 
 		// used for ajax post while typing in search ctrl
 		[HttpPost]
 		public async Task<List<HelpSearchHit>> TypeSearch([FromBody] HelpSearch model)
 		{
-			var found = new List<HelpSearchHit>();
+            await CommonViewBag();
+            var found = new List<HelpSearchHit>();
 			if (ModelState.IsValid)
 			{
 				if (!String.IsNullOrEmpty(model?.Words))
@@ -198,10 +222,12 @@ namespace Common.Controllers
 
 						found.Add(new HelpSearchHit()
 						{
-							Name = doc.Get("name"),
-							TopicKey = doc.Get("key"),
-							Rank = hit.Score,
-						});
+                            Name = doc.Get("name"),
+                            Desc = doc.Get("desc"),
+                            TopicKey = doc.Get("key"),
+                            TopicParentKey = doc.Get("parent"),
+                            Rank = hit.Score,
+                        });
 					}
 				}
 			}
@@ -218,7 +244,20 @@ namespace Common.Controllers
 					path = Path.Combine(HelpFolder, "index.json");
 					using FileStream openStream = System.IO.File.OpenRead(path);
 					_helpIndex = await JsonSerializer.DeserializeAsync<List<HelpIndexItem>>(openStream, _jsonOptions);
-				}
+
+                    foreach(var item in _helpIndex)
+                    {
+                        // set parent key for sub items - we only ever go ONE level deep so this doesn't need recursion
+                        if (item.Items != null && item.Items.Count > 0)
+                        {
+                            foreach(var sub in item.Items)
+                            {
+                                sub.ParentKey = item.Key;
+                            }
+                        }
+                    }
+
+                }
 				return _helpIndex;
 			}
 			catch (Exception ex)
@@ -228,10 +267,10 @@ namespace Common.Controllers
 			}
 		}
 
-		private async Task<IActionResult> LoadHelpView(string md_title)
+		private async Task<IActionResult> LoadHelpView(string md_title, string key_words=null)
 		{
 			await InitViewBag();
-			return View("index", await LoadHelpFileModel(md_title));
+			return View("index", await LoadHelpFileModel(md_title, key_words));
 		}
 
 		private async Task InitViewBag()
@@ -241,9 +280,12 @@ namespace Common.Controllers
 			ViewBag.TopMenu = "menu_support";
 			ViewBag.SidebarMenu = "menu_help";
 			ViewBag.HelpIndex = await LoadHelpIndex();
-		}
 
-		private async Task<HelpFile> LoadHelpFileModel(string md_title)
+            ViewBag.EnableSearch = _settings.EnableSearch;    
+
+        }
+
+		private async Task<HelpFile> LoadHelpFileModel(string md_title, string key_words=null)
 		{
 			string filename = md_title;
 			try
@@ -257,6 +299,16 @@ namespace Common.Controllers
 					.UseColorCode(HtmlFormatterType.Style
 						, isDarkTheme ? ColorCode.Styling.StyleDictionary.DefaultDark : ColorCode.Styling.StyleDictionary.DefaultLight)
 					.Build();
+
+
+                if (!String.IsNullOrWhiteSpace(key_words))
+                {
+                    var kws = key_words.Replace('+', ' ').Replace('-', ' ').Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var kw = String.Join('|', kws).Replace("*",@"[a-zA-Z\.]*");
+                    Regex re = new Regex($@"\b({kw}?)([\.\s])", RegexOptions.IgnoreCase);
+                    raw_md = re.Replace(raw_md, @"==$1==$2");
+                }
+
 				var result = Markdig.Markdown.ToHtml(raw_md, pipeline);
 
                 // this fixes a python markup bug that splits the \t\n with a <span>
@@ -281,7 +333,7 @@ namespace Common.Controllers
 				Html = "<p>Error accessing this help topic</p>",
 				Title = md_title,
 				Filename = filename
-			}; ;
+			};
 		}
 
 		private async Task<IndexSearcher> GetSearcher()
@@ -305,29 +357,41 @@ namespace Common.Controllers
 				var indexConfig = new IndexWriterConfig(lucene_ver, analyzer);
 				_indexWriter = new IndexWriter(new RAMDirectory(), indexConfig);
 
-				foreach (var item in index)
-				{
-					var filename = Path.Combine(HelpFolder, $"{item.Key}.md");
-					var raw_md = await System.IO.File.ReadAllTextAsync(filename, System.Text.Encoding.UTF8);
+                await _indexHelpItems(index);
 
-					raw_md = raw_md.Replace("*", "").Replace("#", "").Replace(" \\", "");
-
-					var doc = new Document
-					{
-						// StringField indexes but doesn't tokenize
-						new StringField("name",item.Name, Field.Store.YES),
-						new StringField("desc",item.Desc, Field.Store.YES),
-						new StringField("key",item.Key, Field.Store.YES),
-						new TextField("text", raw_md, Field.Store.YES)
-					};
-					_indexWriter.AddDocument(doc);
-				}
 				_indexWriter.Flush(triggerMerge: false, applyAllDeletes: false);
 
 				// not sure we need to keep an _indexWriter instance after calling GetReader
 				_Searcher = new IndexSearcher(_indexWriter.GetReader(false));
 			}
 		}
+
+        private async Task _indexHelpItems(List<HelpIndexItem> items)
+        {
+            foreach (var item in items)
+            {
+                var filename = Path.Combine(HelpFolder, $"{item.Key}.md");
+                var raw_md = await System.IO.File.ReadAllTextAsync(filename, System.Text.Encoding.UTF8);
+
+                var raw_text = Markdig.Markdown.ToPlainText(raw_md);
+
+                var doc = new Document
+                    {
+						// StringField indexes but doesn't tokenize
+						new StringField("name",item.Name, Field.Store.YES),
+                        new StringField("desc",item.Desc, Field.Store.YES),
+                        new StringField("key",item.Key, Field.Store.YES),
+                        new StringField("parent",item.ParentKey == null ? "" : item.ParentKey, Field.Store.YES),
+                        new TextField("text", raw_text, Field.Store.YES)
+                    };
+                _indexWriter.AddDocument(doc);
+
+                if (item.Items != null && item.Items.Count > 0)
+                {
+                    await _indexHelpItems(item.Items);
+                }
+            }
+        }
 	}
 }
 
