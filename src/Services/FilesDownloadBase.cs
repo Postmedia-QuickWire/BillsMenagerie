@@ -299,7 +299,7 @@ namespace Common.Classes
 									bug = 0;
 								}
 							}
-							version = maj * 10000 + min * 10 + bug;
+							version = maj * 10000 + min * 100 + bug;
 						}
 
 					}
