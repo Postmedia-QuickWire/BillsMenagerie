@@ -131,8 +131,8 @@ namespace Common.Services
 
     public interface IBearerTokenService
     {
-        public Task<TokenResponse> NewToken(TokenRequest tok_req);
-        public Task<TokenResponse> RefreshToken(TokenRefreshRequest tok_req);
+        public Task<TokenResponse> NewToken(TokenRequest tok_req, HttpRequest request);
+        public Task<TokenResponse> RefreshToken(TokenRefreshRequest tok_req, HttpRequest request);
 
         // added so we can easily use an apikey to auth standalone anonymous endpoints
         public Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
@@ -190,7 +190,7 @@ namespace Common.Services
             return Task.CompletedTask;
         }
 
-        public async Task<TokenResponse> NewToken(TokenRequest tok_req)
+        public async Task<TokenResponse> NewToken(TokenRequest tok_req, HttpRequest request)
         {
             //_logger.LogDebug("NewToken Request: clientId=[{clientId}], clientSecret=[{clientSecret}]", tok_req.clientId, tok_req.clientSecret);
 
@@ -262,7 +262,7 @@ namespace Common.Services
         }
 
         //TODO we need to change this so client_id isn;t actually required when creating a new token
-        public async Task<TokenResponse> RefreshToken(TokenRefreshRequest tok_req)
+        public async Task<TokenResponse> RefreshToken(TokenRefreshRequest tok_req, HttpRequest request)
         {
             string clientId = "-";
             if (string.IsNullOrWhiteSpace(tok_req.AccessToken) || string.IsNullOrWhiteSpace(tok_req.RefreshToken))

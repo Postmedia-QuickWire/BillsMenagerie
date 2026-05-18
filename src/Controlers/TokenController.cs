@@ -66,7 +66,7 @@ namespace Common.Controllers
 			{
 				try
 				{
-					resp = await _tokenService.NewToken(tok_req);
+					resp = await _tokenService.NewToken(tok_req, Request);
                     if (_logTokenCreate)
                     {
                         _logger.LogInformation(">> creating token for '{clientId}', ip={ip}", tok_req.ClientId, Request.HttpContext.Connection.RemoteIpAddress);
@@ -111,7 +111,7 @@ namespace Common.Controllers
 			{
 				try
 				{
-					resp = await _tokenService.RefreshToken(tok_req);
+					resp = await _tokenService.RefreshToken(tok_req, Request);
                 }
                 catch (ApiTokenException ex)
 				{
