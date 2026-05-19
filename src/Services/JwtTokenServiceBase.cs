@@ -136,7 +136,7 @@ namespace Common.Services
 
         // added so we can easily use an apikey to auth standalone anonymous endpoints
         public Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
-        public void ClearUserCache();
+        public void ClearUserCache(string apiKeyHash = null);
 
     }
 
@@ -168,7 +168,7 @@ namespace Common.Services
             _logger = logger;
         }
 
-        public virtual void ClearUserCache() { }
+        public virtual void ClearUserCache(string apiKeyHash = null) { }
 
         // must override to authenticate the user for a new token request
         public abstract Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
@@ -237,7 +237,12 @@ namespace Common.Services
                                     .AddClaim(_jwtSettings.Claim_TokenCreatedDate, created_dt.Ticks.ToString())
                                     .AddClaim(ClaimTypes.NameIdentifier, user.TokenUserId)
                                     .AddClaim(ClaimTypes.UserData, user.TokenAccountId);
-                                    
+
+            // we need to check if user requires mTLS and check the Request if mTLS
+            // if ok then add an "is mTLS" claim and restrict acces to non mTSL access
+            // may be best to call derived class
+            // tokenBuilder = OnBuildToken(tokenBuilder, request, user)
+
             string access_token = tokenBuilder.Build().Value;
 
             TokenResponse resp = new TokenResponse();
@@ -370,11 +375,11 @@ namespace Common.Services
                     .AddIssuer(_jwtSettings.Issuer)
                     .AddAudience(_jwtSettings.Audience)
                     .AddApiAccess(roles)
-                    //.AddClaim(ClaimTypes.Role, role)
                     .AddClaim(ClaimTypes.Name, username)
                     .AddClaim(_jwtSettings.Claim_TokenRefreshedDate, DateTime.UtcNow.Ticks.ToString())
                     //.AddClaim(_jwtSettings.Claim_RefreshTokenHash, MakeHash(refresh_token))
                     .AddExpiry(_jwtSettings.TokenExpiryMinutes);
+
 
             // I DON'T add the refresh token hash anymore, that's stupid, just hash the access_token itself
             if (!String.IsNullOrWhiteSpace(refresh_token))

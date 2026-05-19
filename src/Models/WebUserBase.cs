@@ -240,7 +240,11 @@ namespace Common.Models
 		[Display(Name = "Exempt from Support Expiry")]
 		public bool NoSupportExpiry { get; set; }
 
-		[Display(Name = "Created Date")]
+        [NotMapped]
+        [Display(Name = "Restrict this account to mTLS api access only")]
+        public bool RestrictTo_mTLS{ get; set; }
+
+        [Display(Name = "Created Date")]
 		[DataType(DataType.Date)]
 		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
 		public DateTime? CreatedDate { get; set; }
