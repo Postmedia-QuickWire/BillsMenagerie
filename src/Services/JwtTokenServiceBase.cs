@@ -135,8 +135,9 @@ namespace Common.Services
         public Task<TokenResponse> RefreshToken(TokenRefreshRequest tok_req, HttpRequest request);
 
         // added so we can easily use an apikey to auth standalone anonymous endpoints
-        public Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
+        public Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req, HttpRequest request);
         public void ClearUserCache(string apiKeyHash = null);
+        public void ClearAccountCache(int accountId);
 
     }
 
@@ -170,8 +171,10 @@ namespace Common.Services
 
         public virtual void ClearUserCache(string apiKeyHash = null) { }
 
+        public virtual void ClearAccountCache(int accountId) { }
+
         // must override to authenticate the user for a new token request
-        public abstract Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req);
+        public abstract Task<ITokenUser> AuthenticateTokenUser(TokenRequest tok_req, HttpRequest request);
 
         // must override to fetch the user on a refresh token request
         protected abstract Task<ITokenUser> GetTokenUserForId(string id);
@@ -209,7 +212,7 @@ namespace Common.Services
             if (string.IsNullOrWhiteSpace(tok_req.ClientId) || string.IsNullOrWhiteSpace(tok_req.ClientSecret))
                 throw new ApiTokenException("invalid token request params");
 
-            ITokenUser user = await AuthenticateTokenUser(tok_req);
+            ITokenUser user = await AuthenticateTokenUser(tok_req, request);
             // validate all user props
 
             if (user == null)
