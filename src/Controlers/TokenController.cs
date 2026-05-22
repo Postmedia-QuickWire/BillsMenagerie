@@ -69,14 +69,14 @@ namespace Common.Controllers
 					resp = await _tokenService.NewToken(tok_req, Request);
                     if (_logTokenCreate)
                     {
-                        _logger.LogInformation(">> creating token for '{clientId}', ip={ip}", tok_req.ClientId, Request.HttpContext.Connection.RemoteIpAddress);
+                        _logger.LogInformation(">> creating token for '{clientId}', ip={ip}, xf-port={port}", tok_req.ClientId, Request.HttpContext.Connection.RemoteIpAddress, Request.Headers["X-Forwarded-Port"]);
                     }
                 }
                 catch (ApiTokenException ex)
 				{
 					resp.Msg = ex.userMsg;
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
-					_logger.LogError("Error creating token for '{clientId}', err={Message}, ip={ip}", tok_req.ClientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress);
+					_logger.LogError("Error creating token for '{clientId}', err={Message}, ip={ip}, xf-port={port}", tok_req.ClientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress, Request.Headers["X-Forwarded-Port"]);
 				}
 				catch (Exception ex)
 				{
@@ -84,7 +84,7 @@ namespace Common.Controllers
 						resp.Msg = "unable to create token";
 
 					Response.StatusCode = StatusCodes.Status401Unauthorized;
-					_logger.LogError("Error creating token for '{clientId}', err={Message}, ip={ip}", tok_req.ClientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress);
+					_logger.LogError("Error creating token for '{clientId}', err={Message}, ip={ip}, xf-port={port}", tok_req.ClientId, ex.Message, Request.HttpContext.Connection.RemoteIpAddress, Request.Headers["X-Forwarded-Port"]);
 				}
 
 			}
