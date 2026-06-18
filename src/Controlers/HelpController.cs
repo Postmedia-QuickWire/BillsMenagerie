@@ -62,7 +62,7 @@ namespace Common.Controllers
 		{
 			try
 			{
-				await InitViewBag();
+				await CommonViewBag();
 				var model = await LoadHelpFileModel("index");
 
 				var sb = new StringBuilder();
@@ -89,7 +89,7 @@ namespace Common.Controllers
 		{
 			try
 			{
-                await InitViewBag();
+                await CommonViewBag();
                 ViewBag.KeyWords = kw;
                 ViewBag.HelpSubIndex = id;
 				if (!String.IsNullOrEmpty(sid))
@@ -144,7 +144,7 @@ namespace Common.Controllers
             var found = new HelpSearchHits();
             try
             {
-                await InitViewBag();
+                await CommonViewBag();
 
                 if (!String.IsNullOrEmpty(q))
                 {
@@ -268,9 +268,9 @@ namespace Common.Controllers
 			}
 		}
 
-		private async Task InitViewBag()
+        protected override async Task CommonViewBag()
 		{
-			await CommonViewBag();
+			await base.CommonViewBag();
 
 			ViewBag.TopMenu = "menu_support";
 			ViewBag.SidebarMenu = "menu_help";
@@ -280,7 +280,7 @@ namespace Common.Controllers
 
         }
 
-		private async Task<HelpFile> LoadHelpFileModel(string md_title, string key_words=null)
+		protected virtual async Task<HelpFile> LoadHelpFileModel(string md_title, string key_words=null)
 		{
 			string filename = md_title;
 			try
