@@ -26,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\ExecutionPlan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\FilesDownloadBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\FilesDownloadBB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ProcessServiceHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IUserFileManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\JwtTokenBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\MongoMessageQueue.cs" />
