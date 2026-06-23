@@ -57,7 +57,7 @@ namespace BillsMenagerie.Services
 
     public static class ProcessServiceHandlerExtensions
     {
-        public static IServiceCollection AddProcessServiceHandler<T>(
+        public static IServiceCollection AddProcessServiceHandler(
              this IServiceCollection services, Action<ProcessServiceHandlerConfig> setconf)
         {
             var config = new ProcessServiceHandlerConfig();
@@ -146,7 +146,13 @@ namespace BillsMenagerie.Services
         {
             get
             {
-                return _process.HasExited == false;
+                try
+                {
+                    return _process.HasExited == false;
+                }
+                catch (Exception e){ 
+                }
+                return false;
             }
         }
 
@@ -177,6 +183,7 @@ namespace BillsMenagerie.Services
                 bool ok = _process.Start();
                 if (ok)
                 {
+
                     _process.BeginOutputReadLine();
                     _process.BeginErrorReadLine();
                 }
@@ -188,8 +195,8 @@ namespace BillsMenagerie.Services
         {
             if (IsServiceRunning)
             {
-                await _process.WaitForExitAsync();
                 _process.Kill();
+                await _process.WaitForExitAsync();
             }
             return true;
         }
@@ -198,8 +205,8 @@ namespace BillsMenagerie.Services
         {
             if (IsServiceRunning)
             {
-                _process.WaitForExit();
                 _process.Kill();
+                _process.WaitForExit();
             }
             return true;
         }
