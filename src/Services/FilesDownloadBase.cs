@@ -166,7 +166,7 @@ namespace Common.Classes
 		/// </summary>
 
 		protected bool hasScanned { get; set; } = false;
-		protected ConcurrentDictionary<string, DownloadItem> _DownloadItems = new ConcurrentDictionary<string, DownloadItem>();
+		protected ConcurrentDictionary<string, DownloadItem> _DownloadItems = new ConcurrentDictionary<string, DownloadItem>(StringComparer.OrdinalIgnoreCase);
 
 		public FilesDownloadBase(IOptions<AppSettings> settings)
 		{
