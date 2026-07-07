@@ -37,7 +37,6 @@ namespace Common.Services
         /// </summary>
         public string WorkingDirectory { get; set; }
 
-
         /// <summary>
         /// The name of the logger to use for logging messages from the service handler. If not specified, the default logger will be used.
         /// </summary>
@@ -77,6 +76,7 @@ namespace Common.Services
                     return new ProcessServiceHandler(config, x.GetRequiredService<ILoggerFactory>());
                 });
             }
+
             return services;
         }
     }
@@ -86,16 +86,19 @@ namespace Common.Services
         private readonly ProcessServiceHandlerConfig _config;
         private readonly ILogger _logger;
         private Process _process;
+        private string _logName;
         //private readonly string _serviceKey;
         public ProcessServiceHandler(ProcessServiceHandlerConfig config, ILoggerFactory loggerfactory)
         {
             _config = config;
             if (!string.IsNullOrEmpty(config.LoggerName))
             {
+                _logName = config.LoggerName;
                 _logger = loggerfactory.CreateLogger(config.LoggerName);
             }
             else
             {
+                _logName = nameof(ProcessServiceHandler);
                 _logger = loggerfactory.CreateLogger<ProcessServiceHandler>();
             }
 
@@ -158,6 +161,7 @@ namespace Common.Services
 
         public async Task<bool> RestartServiceAsync()
         {
+            _logger.LogInformation("Restarting service {srv}...", _logName);
             if (IsServiceRunning)
             {
                 await StopServiceAsync();
@@ -167,6 +171,7 @@ namespace Common.Services
 
         public bool RestartService()
         {
+            _logger.LogInformation("Restarting service {srv}...", _logName);
             if (IsServiceRunning)
             {
                 StopService();
@@ -177,15 +182,27 @@ namespace Common.Services
 
         public bool StartService()
         {
+            _logger.LogInformation("Starting service {srv}...", _logName);
             if (!IsServiceRunning)
             {
-                _process.Refresh();
-                bool ok = _process.Start();
-                if (ok)
+                try
                 {
-
-                    _process.BeginOutputReadLine();
-                    _process.BeginErrorReadLine();
+                    _process.Refresh();
+                    bool ok = _process.Start();
+                    if (ok)
+                    {
+                        _process.BeginOutputReadLine();
+                        _process.BeginErrorReadLine();
+                        _logger.LogDebug("Service started successfully: {srv}", _logName);
+                    }
+                    else
+                    {
+                        _logger.LogError("Failed to start service: {srv}", _logName);
+                    }
+                }
+                catch(Exception e)
+                {
+                    _logger.LogError(e, "Error occurred while starting service: {srv}, {e}", _logName, e.Message);
                 }
             }
             return true;
