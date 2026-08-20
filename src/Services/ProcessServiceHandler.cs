@@ -18,6 +18,7 @@ namespace Common.Services
 
         public bool IsServiceRunning { get; }
 
+        //public ProcessServiceHandlerConfig Config { get; }
     }
 
     public class ProcessServiceHandlerConfig
@@ -79,27 +80,76 @@ namespace Common.Services
 
             return services;
         }
+
+
+        // good if we have a object that inherits from ProcessServiceHandler and we want to register it as a singleton (keyed)
+        public static IServiceCollection AddProcessServiceHandler(this IServiceCollection services, ProcessServiceHandler handler)
+        {
+
+            if (String.IsNullOrEmpty(handler.Config?.ServiceKey))
+            {
+                services.AddSingleton<IProcessServiceHandler>(handler);
+            }
+            else
+            {
+                services.AddKeyedSingleton<IProcessServiceHandler>(handler.Config.ServiceKey, handler);
+            }
+
+            return services;
+        }
+
+        public static IServiceCollection AddProcessServiceHandler<T>(this IServiceCollection services, string ServiceKey) where T : ProcessServiceHandler
+        {
+
+            if (String.IsNullOrEmpty(ServiceKey))
+            {
+                services.AddSingleton<IProcessServiceHandler, T> ();
+            }
+            else
+            {
+                services.AddKeyedSingleton<IProcessServiceHandler, T>(ServiceKey);
+            }
+
+            return services;
+        }
+
     }
 
     public class ProcessServiceHandler : IProcessServiceHandler
     {
-        private readonly ProcessServiceHandlerConfig _config;
-        private readonly ILogger _logger;
-        private Process _process;
-        private string _logName;
-        //private readonly string _serviceKey;
+        protected ProcessServiceHandlerConfig _config;
+        protected ILogger _logger;
+        protected Process _process;
+        protected string _logName;
+        private readonly ILoggerFactory _loggerfactory;
+
+        public ProcessServiceHandlerConfig Config => _config;
+
+
+        // used for classes that inherit from this class and want to set the config in their constructor
+        public ProcessServiceHandler(ILoggerFactory loggerfactory)
+        {
+            _loggerfactory = loggerfactory;
+        }
+
         public ProcessServiceHandler(ProcessServiceHandlerConfig config, ILoggerFactory loggerfactory)
+        {
+            _loggerfactory = loggerfactory;
+            SetConfig(config);
+        }
+
+        protected void SetConfig(ProcessServiceHandlerConfig config)
         {
             _config = config;
             if (!string.IsNullOrEmpty(config.LoggerName))
             {
                 _logName = config.LoggerName;
-                _logger = loggerfactory.CreateLogger(config.LoggerName);
+                _logger = _loggerfactory.CreateLogger(config.LoggerName);
             }
             else
             {
                 _logName = nameof(ProcessServiceHandler);
-                _logger = loggerfactory.CreateLogger<ProcessServiceHandler>();
+                _logger = _loggerfactory.CreateLogger<ProcessServiceHandler>();
             }
 
             _process = new Process();
@@ -122,14 +172,14 @@ namespace Common.Services
 
             _process.Exited += ProcessExited;
         }
-
-        private void ProcessExited(object sender, EventArgs e)
+    
+        protected virtual void ProcessExited(object sender, EventArgs e)
         {
             // ah do something - just not sure
             _logger.LogInformation("Process exited: {0}", _process.ExitCode);
         }
 
-        private void LogStdOut(string data)
+        protected virtual void LogStdOut(string data)
         {
             if (!string.IsNullOrEmpty(data))
             {
@@ -137,7 +187,7 @@ namespace Common.Services
             }
         }
 
-        private void LogStdError(string data)
+        protected virtual void LogStdError(string data)
         {
             if (!string.IsNullOrEmpty(data))
             {
@@ -227,5 +277,25 @@ namespace Common.Services
             }
             return true;
         }
+
+
+        public static void KillProcess(string processName)
+        {
+            Process[] localByName = Process.GetProcessesByName(processName);
+
+            foreach (Process p in localByName)
+            {
+                try
+                {
+                    p.Kill();
+                    p.WaitForExit(60000); // Wait for the process to fully exit
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"KillProcesses: Error killing process: {ex.Message}");
+                }
+            }
+        }
+
     }
 }
