@@ -138,7 +138,7 @@ namespace Common.Services
             SetConfig(config);
         }
 
-        protected void SetConfig(ProcessServiceHandlerConfig config)
+        public virtual void SetConfig(ProcessServiceHandlerConfig config)
         {
             _config = config;
             if (!string.IsNullOrEmpty(config.LoggerName))
