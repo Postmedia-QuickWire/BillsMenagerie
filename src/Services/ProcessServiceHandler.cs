@@ -152,6 +152,13 @@ namespace Common.Services
                 _logger = _loggerfactory.CreateLogger<ProcessServiceHandler>();
             }
 
+            InitializeProcess();
+        }
+
+        // MUST set the _config before calling this method, otherwise it will throw an exception
+        protected void InitializeProcess()
+        {
+            ArgumentNullException.ThrowIfNull(_config);
             _process = new Process();
             _process.StartInfo.FileName = _config.Executable;
             _process.StartInfo.Arguments = _config.Parameters;
@@ -176,7 +183,7 @@ namespace Common.Services
         protected virtual void ProcessExited(object sender, EventArgs e)
         {
             // ah do something - just not sure
-            _logger.LogInformation("Process exited: {0}", _process.ExitCode);
+            _logger.LogInformation("Process exited: {0}", _process?.ExitCode);
         }
 
         protected virtual void LogStdOut(string data)
@@ -201,7 +208,7 @@ namespace Common.Services
             {
                 try
                 {
-                    return _process.HasExited == false;
+                    return _process?.HasExited == false;
                 }
                 catch (Exception e){ 
                 }
@@ -237,7 +244,8 @@ namespace Common.Services
             {
                 try
                 {
-                    _process.Refresh();
+                    InitializeProcess();
+                    //_process.Refresh();
                     bool ok = _process.Start();
                     if (ok)
                     {
