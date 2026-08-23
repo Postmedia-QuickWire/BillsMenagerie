@@ -18,6 +18,10 @@ namespace Common.Services
 
         public bool IsServiceRunning { get; }
 
+        public void ReportMemoryUsage(); //log
+        public long GetPrivateMemoryUsage();
+        public long GetMemoryUsage();
+
         //public ProcessServiceHandlerConfig Config { get; }
     }
 
@@ -192,6 +196,46 @@ namespace Common.Services
             if (!string.IsNullOrEmpty(data))
             {
                 _logger.LogError(data);
+            }
+        }
+
+        public void ReportMemoryUsage()
+        {
+            // Refresh the cached metrics
+            _process.Refresh(); 
+
+            long bytesUsed = _process.WorkingSet64;
+            double mbUsed = bytesUsed / (1024.0 * 1024.0);
+
+            _logger.LogInformation("Physical Memory (Working Set): {mbUsed:F2} MB", mbUsed);
+            _logger.LogInformation("Private Memory: {pmem:F2} MB", _process.PrivateMemorySize64 / (1024.0 * 1024.0));
+        }
+
+        public long GetMemoryUsage()
+        {
+            try
+            {
+                _process.Refresh(); // Refresh the cached metrics
+                return _process.WorkingSet64;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred while getting memory usage for service: {srv}, {e}", _logName, e.Message);
+                return 0;
+            }
+        }
+
+        public long GetPrivateMemoryUsage()
+        {
+            try
+            {
+                _process.Refresh(); // Refresh the cached metrics
+                return _process.PrivateMemorySize64;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred while getting private memory usage for service: {srv}, {e}", _logName, e.Message);
+                return 0;
             }
         }
 
