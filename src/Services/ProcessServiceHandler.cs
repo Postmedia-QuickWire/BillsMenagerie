@@ -295,6 +295,7 @@ namespace Common.Services
                 {
                     InitializeProcess();
                     //_process.Refresh();
+                    _logger.LogInformation("Starting Service, {exe}", _config.Executable);
                     bool ok = _process.Start();
                     if (ok)
                     {
