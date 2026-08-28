@@ -18,6 +18,10 @@ namespace Common.Services
 
         public bool IsServiceRunning { get; }
 
+        public void ReportMemoryUsage(); //log
+        public long GetPrivateMemoryUsage();
+        public long GetMemoryUsage();
+
         //public ProcessServiceHandlerConfig Config { get; }
     }
 
@@ -125,6 +129,8 @@ namespace Common.Services
 
         public ProcessServiceHandlerConfig Config => _config;
 
+        // set true when we call StopService so we can expect the exit event
+        protected bool StopServiceCalled { get; set; } = false;
 
         // used for classes that inherit from this class and want to set the config in their constructor
         public ProcessServiceHandler(ILoggerFactory loggerfactory)
@@ -177,6 +183,7 @@ namespace Common.Services
             _process.OutputDataReceived += (sender, args) => LogStdOut(args.Data);
             _process.ErrorDataReceived += (sender, args) => LogStdError(args.Data);
 
+            _process.EnableRaisingEvents = true;
             _process.Exited += ProcessExited;
         }
     
@@ -184,6 +191,7 @@ namespace Common.Services
         {
             // ah do something - just not sure
             _logger.LogInformation("Process exited: {0}", _process?.ExitCode);
+
         }
 
         protected virtual void LogStdOut(string data)
@@ -202,13 +210,53 @@ namespace Common.Services
             }
         }
 
+        public void ReportMemoryUsage()
+        {
+            // Refresh the cached metrics
+            _process.Refresh(); 
+
+            long bytesUsed = _process.WorkingSet64;
+            double mbUsed = bytesUsed / (1024.0 * 1024.0);
+
+            _logger.LogInformation("Physical Memory (Working Set): {mbUsed:F2} MB", mbUsed);
+            _logger.LogInformation("Private Memory: {pmem:F2} MB", _process.PrivateMemorySize64 / (1024.0 * 1024.0));
+        }
+
+        public long GetMemoryUsage()
+        {
+            try
+            {
+                _process.Refresh(); // Refresh the cached metrics
+                return _process.WorkingSet64;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred while getting memory usage for service: {srv}, {e}", _logName, e.Message);
+                return 0;
+            }
+        }
+
+        public long GetPrivateMemoryUsage()
+        {
+            try
+            {
+                _process.Refresh(); // Refresh the cached metrics
+                return _process.PrivateMemorySize64;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred while getting private memory usage for service: {srv}, {e}", _logName, e.Message);
+                return 0;
+            }
+        }
+
         public bool IsServiceRunning
         {
             get
             {
                 try
                 {
-                    return _process?.HasExited == false;
+                     return _process?.HasExited == false;
                 }
                 catch (Exception e){ 
                 }
@@ -242,6 +290,7 @@ namespace Common.Services
             _logger.LogInformation("Starting service {srv}...", _logName);
             if (!IsServiceRunning)
             {
+                StopServiceCalled = false;
                 try
                 {
                     InitializeProcess();
@@ -270,6 +319,7 @@ namespace Common.Services
         {
             if (IsServiceRunning)
             {
+                StopServiceCalled = true;
                 _process.Kill();
                 await _process.WaitForExitAsync();
             }
@@ -280,6 +330,7 @@ namespace Common.Services
         {
             if (IsServiceRunning)
             {
+                StopServiceCalled = true;
                 _process.Kill();
                 _process.WaitForExit();
             }

@@ -45,7 +45,7 @@ namespace Common.Classes
 			keys.Sort();
 			foreach (var k in keys)
 			{
-				Console.Out.WriteLine($"{k} = {env[k]}");
+				//Console.Out.WriteLine($"{k} = {env[k]}");
 				dict[k] = env[k].ToString();
 			}
 			return dict;
