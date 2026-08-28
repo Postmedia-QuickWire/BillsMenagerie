@@ -129,6 +129,8 @@ namespace Common.Services
 
         public ProcessServiceHandlerConfig Config => _config;
 
+        // set true when we call StopService so we can expect the exit event
+        protected bool StopServiceCalled { get; set; } = false;
 
         // used for classes that inherit from this class and want to set the config in their constructor
         public ProcessServiceHandler(ILoggerFactory loggerfactory)
@@ -174,6 +176,7 @@ namespace Common.Services
             _process.OutputDataReceived += (sender, args) => LogStdOut(args.Data);
             _process.ErrorDataReceived += (sender, args) => LogStdError(args.Data);
 
+            _process.EnableRaisingEvents = true;
             _process.Exited += ProcessExited;
         }
     
@@ -181,6 +184,7 @@ namespace Common.Services
         {
             // ah do something - just not sure
             _logger.LogInformation("Process exited: {0}", _process.ExitCode);
+
         }
 
         protected virtual void LogStdOut(string data)
@@ -279,6 +283,7 @@ namespace Common.Services
             _logger.LogInformation("Starting service {srv}...", _logName);
             if (!IsServiceRunning)
             {
+                StopServiceCalled = false;
                 try
                 {
                     _process.Refresh();
@@ -306,6 +311,7 @@ namespace Common.Services
         {
             if (IsServiceRunning)
             {
+                StopServiceCalled = true;
                 _process.Kill();
                 await _process.WaitForExitAsync();
             }
@@ -316,6 +322,7 @@ namespace Common.Services
         {
             if (IsServiceRunning)
             {
+                StopServiceCalled = true;
                 _process.Kill();
                 _process.WaitForExit();
             }
