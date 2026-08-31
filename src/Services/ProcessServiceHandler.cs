@@ -258,7 +258,7 @@ namespace Common.Services
                 {
                      return _process?.HasExited == false;
                 }
-                catch (Exception e){ 
+                catch (Exception){ 
                 }
                 return false;
             }
