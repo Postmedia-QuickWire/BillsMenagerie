@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using System.Threading.Tasks;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 { 
 
 	public interface IViewRender

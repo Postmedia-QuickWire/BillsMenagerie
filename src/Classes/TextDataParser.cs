@@ -7,7 +7,7 @@ using System.Text;
 //using Lucene.Net.Index;
 using Microsoft.VisualBasic.FileIO;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
     /// <summary>
     /// This class can parse a CSV or any type of delimited file

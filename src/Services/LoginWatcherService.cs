@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 	// this service watches for too many login attempts over a short period of time
 	// add service as a singleton, inject into your public accounts controller

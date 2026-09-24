@@ -1,5 +1,5 @@
 ﻿
-namespace Common.Models
+namespace BillsMenagerie.Models
 {
 
     public class HelpSearchModel

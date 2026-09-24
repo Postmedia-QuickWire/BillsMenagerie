@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 
 	// Allows a hosted service to be DI injected anywhere

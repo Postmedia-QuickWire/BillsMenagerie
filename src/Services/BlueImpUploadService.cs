@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
 using WebSite.Models;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 
 	public interface IBlueImpUploadService

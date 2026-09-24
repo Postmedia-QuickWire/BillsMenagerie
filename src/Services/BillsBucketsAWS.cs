@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
     /// <summary>
     /// AWS implementation of IBillsBuckets

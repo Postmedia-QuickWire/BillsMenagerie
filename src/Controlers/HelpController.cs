@@ -17,14 +17,14 @@ using Lucene.Net.Search.Highlight;
 using StreetPerfect.Classes;
 using StreetPerfect.Controllers;
 using StreetPerfect.Models;
-using Common.Classes;
+using BillsMenagerie.Classes;
 using WebSite.Controllers;
-using Common.Models;
+using BillsMenagerie.Models;
 using System.Text.RegularExpressions;
 using System.Web;
 
 
-namespace Common.Controllers
+namespace BillsMenagerie.Controllers
 {
 
 	[Authorize]

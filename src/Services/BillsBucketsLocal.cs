@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 	/// <summary>
 	/// Just a Local folder implementation of IBillsBuckets

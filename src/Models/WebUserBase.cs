@@ -1,5 +1,5 @@
-﻿using Common.Classes;
-using Common.Services;
+﻿using BillsMenagerie.Classes;
+using BillsMenagerie.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -8,9 +8,9 @@ using System.Data;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
-using static Common.Models.WebAccount;
+using static BillsMenagerie.Models.WebAccount;
 
-namespace Common.Models
+namespace BillsMenagerie.Models
 {
 
 	/// <summary>

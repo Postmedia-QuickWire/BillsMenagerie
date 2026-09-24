@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 	/// <summary>
 	/// I've created a common class here to handle both GCP and AWS buckets

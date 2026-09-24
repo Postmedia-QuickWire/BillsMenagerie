@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 	/// <summary>
 	/// a template for a request pipeline object

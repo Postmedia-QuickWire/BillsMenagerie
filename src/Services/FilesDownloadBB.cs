@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using WebSite.Models;
-using Common.Services;
+using BillsMenagerie.Services;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 
 	/// <summary>

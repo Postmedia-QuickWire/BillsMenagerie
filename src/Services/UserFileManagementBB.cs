@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using WebSite.Models;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 	public class UserFileManagementBB : IUserFileManagement
 	{

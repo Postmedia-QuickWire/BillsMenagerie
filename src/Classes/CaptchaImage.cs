@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 
     public class CaptchaImage : IDisposable

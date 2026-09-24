@@ -3,9 +3,9 @@ using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using WebSite.Models;
-using Common.Models;
+using BillsMenagerie.Models;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 	public class DownloadViewModel
 	{

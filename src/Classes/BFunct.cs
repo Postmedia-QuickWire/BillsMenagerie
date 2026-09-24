@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 
 	// my string extensions

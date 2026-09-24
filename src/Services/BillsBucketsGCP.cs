@@ -7,7 +7,7 @@ using System.Threading;
 using Google.Apis.Storage.v1.Data;
 using Google.Cloud.Storage.V1;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 	/// <summary>
 	/// GCP implementation of IBillsBuckets

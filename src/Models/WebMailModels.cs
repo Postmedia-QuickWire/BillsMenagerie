@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata;
-using System.Text.Json.Serialization;
-using WebSite.Models;
 
-namespace Common.Models
+namespace BillsMenagerie.Models
 {
 	public class WebMailTemplateModel
 	{

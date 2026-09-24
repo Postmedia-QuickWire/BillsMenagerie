@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Common.Controllers
+namespace BillsMenagerie.Controllers
 {
 	[Route("healthz")]
 	[ApiExplorerSettings(IgnoreApi = true)]

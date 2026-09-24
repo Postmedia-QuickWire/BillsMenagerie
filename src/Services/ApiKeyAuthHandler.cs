@@ -23,7 +23,7 @@ using System.Collections.Concurrent;
  * see the JwtTokenServiceBase class for a better token implementation
  */
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 
     public class ApiKeyAuthOptions : AuthenticationSchemeOptions

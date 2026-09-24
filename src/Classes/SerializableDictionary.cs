@@ -6,7 +6,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 
 	//[XmlRoot("dictionary")]

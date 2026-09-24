@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 	public static class AccentNormalizer
 	{

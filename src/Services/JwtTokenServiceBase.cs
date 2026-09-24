@@ -7,9 +7,9 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
-using Common.Classes;
+using BillsMenagerie.Classes;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
     /// <summary>
     /// here it is, the one JWT class for all seasons

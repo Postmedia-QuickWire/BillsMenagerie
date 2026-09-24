@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Common.Controllers
+namespace BillsMenagerie.Controllers
 {
     public class SwaggerUIController : Controller
     {

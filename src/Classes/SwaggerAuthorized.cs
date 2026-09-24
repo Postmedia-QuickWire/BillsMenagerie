@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 
 	// need to lock down the swagger controller

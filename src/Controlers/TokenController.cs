@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Common.Classes;
-using Common.Services;
+using BillsMenagerie.Classes;
+using BillsMenagerie.Services;
 
-namespace Common.Controllers
+namespace BillsMenagerie.Controllers
 {
 
 	/// <summary>

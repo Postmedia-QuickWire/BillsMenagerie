@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Policy;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 
 	public interface ICipherService

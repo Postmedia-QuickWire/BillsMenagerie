@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-namespace Common.Classes
+namespace BillsMenagerie.Classes
 {
 
 	public static class JwtSecurityKey

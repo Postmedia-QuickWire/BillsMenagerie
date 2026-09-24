@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using WebSite.Models;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 	public interface IUserFileManagement
 	{

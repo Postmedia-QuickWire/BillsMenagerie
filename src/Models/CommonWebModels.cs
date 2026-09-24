@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Common.Models
+namespace BillsMenagerie.Models
 {
 
 	public class ContactForm

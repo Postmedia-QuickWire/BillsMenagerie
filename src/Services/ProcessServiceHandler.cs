@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Common.Services
+namespace BillsMenagerie.Services
 {
 
     public interface IProcessServiceHandler
