@@ -96,6 +96,7 @@ namespace BillsMenagerie.Classes
 
         /// <summary>
         /// storage type is set at scan time by FilesDownloadBase sub class
+        /// if missing, file was not found
         /// </summary>
         public string StorageType { get; set; }
 
