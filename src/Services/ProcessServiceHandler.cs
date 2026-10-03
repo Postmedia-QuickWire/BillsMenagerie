@@ -165,6 +165,7 @@ namespace BillsMenagerie.Services
         protected void InitializeProcess()
         {
             ArgumentNullException.ThrowIfNull(_config);
+
             _process = new Process();
             _process.StartInfo.FileName = _config.Executable;
             _process.StartInfo.Arguments = _config.Parameters;
