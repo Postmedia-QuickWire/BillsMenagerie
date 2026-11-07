@@ -69,7 +69,7 @@ namespace BillsMenagerie.Controllers
 				sb.AppendLine("<div class='help-index'>");
 				foreach (HelpIndexItem item in ViewBag.HelpIndex)
 				{
-					sb.AppendFormat("<p><a href='/Help/topic/{0}'>{1}</a><br/>{2}</p>", item.Key, item.Name, item.Desc);
+					sb.AppendFormat("<div class='icon-indented-div'><i class='fa-solid fa-circle-info text-primary'></i> <p class='icon-indented-p'><a href='/Help/topic/{0}' class='link-offset-2 link-underline-info'> {1}</a><br/>{2}</p></div>", item.Key, item.Name, item.Desc);
 				}
 				sb.AppendLine("</div>");
 				model.Html += sb.ToString();
